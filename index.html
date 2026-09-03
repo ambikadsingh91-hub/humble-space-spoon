@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LOT Shop</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- AUTH SCREEN -->
+<div id="authScreen" class="auth-screen">
+  <div class="auth-card">
+
+    <div class="logo">
+      <span>£</span> LOT Shop
+    </div>
+
+    <div class="auth-tabs">
+      <button id="loginTab" class="active" onclick="showAuth('login')">
+        Login
+      </button>
+
+      <button id="signupTab" onclick="showAuth('signup')">
+        Sign Up
+      </button>
+    </div>
+
+    <form id="loginForm" onsubmit="login(event)">
+
+      <h1>Welcome back</h1>
+
+      <p class="muted">
+        Login to continue.
+      </p>
+
+      <input
+        id="loginUser"
+        class="input"
+        placeholder="Username or email"
+        required
+      >
+
+      <input
+        id="loginPass"
+        class="input"
+        type="password"
+        placeholder="Password"
+        required
+      >
+
+      <button
+        class="primary full"
+        type="submit"
+      >
+        Login
+      </button>
+
+      <p id="loginMessage" class="message"></p>
+
+    </form>
+
+
+    <form
+      id="signupForm"
+      class="hidden"
+      onsubmit="signup(event)"
+    >
+
+      <h1>Create account</h1>
+
+      <p class="muted">
+        Join the LOT Shop marketplace.
+      </p>
+
+      <input
+        id="signupUser"
+        class="input"
+        placeholder="Username"
+        required
+      >
+
+      <input
+        id="signupEmail"
+        class="input"
+        type="email"
+        placeholder="Email"
+        required
+      >
+
+      <input
+        id="signupPass"
+        class="input"
+        type="password"
+        placeholder="Password"
+        required
+      >
+
+      <input
+        id="signupConfirm"
+        class="input"
+        type="password"
+        placeholder="Confirm password"
+        required
+      >
+
+      <button
+        class="primary full"
+        type="submit"
+      >
+        Create Account
+      </button>
+
+      <p id="signupMessage" class="message"></p>
+
+    </form>
+
+  </div>
+</div>
+
+
+
+<!-- MAIN APP -->
+
+<div id="app" class="hidden">
+
+<header class="navbar">
+
+  <div class="logo">
+    <span>£</span> LOT Shop
+  </div>
+
+  <div class="search-box">
+
+    <input
+      id="searchInput"
+      oninput="renderMarketplace()"
+      placeholder="Search items..."
+    >
+
+  </div>
+
+  <nav>
+
+    <a href="#marketplace">
+      Marketplace
+    </a>
+
+    <a href="#sell">
+      Sell
+    </a>
+
+    <a href="#dashboard">
+      Dashboard
+    </a>
+
+    <button onclick="logout()">
+      Logout
+    </button>
+
+  </nav>
+
+</header>
+
+
+
+<!-- HERO -->
+
+<section class="hero">
+
+  <div>
+
+    <p class="tag">
+      THE NEXT-GEN MARKETPLACE
+    </p>
+
+    <h1>
+      Buy. Sell.<br>
+      <span>Earn LOT.</span>
+    </h1>
+
+    <p class="hero-text">
+      Buy and sell items using LOT currency.
+    </p>
+
+    <div class="hero-buttons">
+
+      <a
+        href="#marketplace"
+        class="primary"
+      >
+        Explore Marketplace
+      </a>
+
+      <a
+        href="#sell"
+        class="secondary"
+      >
+        Sell an Item
+      </a>
+
+    </div>
+
+  </div>
+
+
+  <div class="account-box">
+
+    <small>
+      Logged in as
+    </small>
+
+    <strong id="usernameDisplay"></strong>
+
+    <b>
+      <span id="balanceDisplay">0</span>
+      LOT
+    </b>
+
+  </div>
+
+</section>
+
+
+
+<!-- MARKETPLACE -->
+
+<section
+  id="marketplace"
+  class="section"
+>
+
+  <div class="section-header">
+
+    <div>
+
+      <p class="tag">
+        MARKETPLACE
+      </p>
+
+      <h2>
+        Items
+      </h2>
+
+    </div>
+
+
+    <select
+      id="categoryFilter"
+      onchange="renderMarketplace()"
+    >
+
+      <option value="all">
+        All Categories
+      </option>
+
+      <option value="weapons">
+        Weapons
+      </option>
+
+      <option value="collectibles">
+        Collectibles
+      </option>
+
+      <option value="clothing">
+        Clothing
+      </option>
+
+      <option value="other">
+        Other
+      </option>
+
+    </select>
+
+  </div>
+
+
+  <div
+    id="marketplaceItems"
+    class="items-grid"
+  ></div>
+
+</section>
+
+
+
+<!-- SELL -->
+
+<section
+  id="sell"
+  class="section"
+>
+
+  <div class="sell-card">
+
+    <p class="tag">
+      SELL ON LOT SHOP
+    </p>
+
+    <h2>
+      Create a listing
+    </h2>
+
+
+    <div class="form-grid">
+
+      <input
+        id="itemName"
+        class="input"
+        placeholder="Item name"
+      >
+
+
+      <input
+        id="itemPrice"
+        class="input"
+        type="number"
+        min="1"
+        placeholder="Price in LOT"
+      >
+
+
+      <input
+        id="itemStock"
+        class="input"
+        type="number"
+        min="1"
+        placeholder="Stock quantity"
+      >
+
+
+      <select
+        id="itemCategory"
+        class="input"
+      >
+
+        <option value="weapons">
+          Weapons
+        </option>
+
+        <option value="collectibles">
+          Collectibles
+        </option>
+
+        <option value="clothing">
+          Clothing
+        </option>
+
+        <option value="other">
+          Other
+        </option>
+
+      </select>
+
+
+      <textarea
+        id="itemDescription"
+        class="input"
+        placeholder="Description"
+      ></textarea>
+
+
+      <input
+        id="itemImage"
+        class="input"
+        type="file"
+        accept="image/png,image/jpeg,image/webp"
+      >
+
+
+      <!-- NEW WEBHOOK FIELD -->
+
+      <div class="webhook-field">
+
+        <label for="itemWebhook">
+          Discord Webhook URL
+        </label>
+
+        <input
+          id="itemWebhook"
+          class="input"
+          type="url"
+          placeholder="https://discord.com/api/webhooks/..."
+        >
+
+        <small class="muted">
+          Purchase notifications for this listing will be sent to this webhook.
+        </small>
+
+      </div>
+
+    </div>
+
+
+    <button
+      class="primary"
+      onclick="createListing()"
+    >
+      Publish Item
+    </button>
+
+  </div>
+
+</section>
+
+
+
+<!-- DASHBOARD -->
+
+<section
+  id="dashboard"
+  class="section"
+>
+
+  <p class="tag">
+    ACCOUNT
+  </p>
+
+  <h2>
+    My Dashboard
+  </h2>
+
+
+  <div
+    id="stats"
+    class="stats"
+  ></div>
+
+
+  <div class="dashboard-card">
+
+    <h3>
+      My Listings
+    </h3>
+
+    <div id="myListings"></div>
+
+  </div>
+
+</section>
+
+
+
+<footer>
+
+  <div class="logo">
+    <span>£</span> LOT Shop
+  </div>
+
+  <p>
+    © 2026 LOT Shop
+  </p>
+
+</footer>
+
+</div>
+
+
+
+<!-- PURCHASE MODAL -->
+
+<div
+  id="purchaseModal"
+  class="modal"
+>
+
+  <div class="modal-card">
+
+    <button
+      class="close"
+      onclick="closePurchase()"
+    >
+      ×
+    </button>
+
+
+    <h2 id="purchaseName"></h2>
+
+
+    <div class="purchase-info">
+
+      <p>
+        Price:
+        <b id="purchasePrice"></b>
+        LOT
+      </p>
+
+      <p>
+        Stock:
+        <b id="purchaseStock"></b>
+      </p>
+
+      <p>
+        Your balance:
+        <b id="purchaseBalance"></b>
+        LOT
+      </p>
+
+      <p>
+        Remaining:
+        <b id="purchaseRemaining"></b>
+        LOT
+      </p>
+
+    </div>
+
+
+    <button
+      id="confirmPurchaseButton"
+      class="primary full"
+      onclick="confirmPurchase()"
+    >
+      Confirm Purchase
+    </button>
+
+
+    <button
+      class="secondary full"
+      onclick="closePurchase()"
+    >
+      Cancel
+    </button>
+
+  </div>
+
+</div>
+
+
+
+<div id="toast"></div>
+
+
+<script src="script.js"></script>
+
+</body>
+</html>
